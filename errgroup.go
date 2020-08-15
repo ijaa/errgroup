@@ -52,10 +52,10 @@ func (g *Group) Go(f func() error) {
 		var err error
 		defer func() {
 			if rerr := recover(); rerr != nil {
-				buf := make([]byte, 64<<10)
+				buf := make([]byte, 1<<16)
 				buf = buf[:runtime.Stack(buf, false)]
-				fmt.Fprintf(os.Stderr, "errgroup panic recovered: %s\n%s", rerr, buf)
-				err = fmt.Errorf("errgroup panic: %s", rerr)
+				fmt.Fprintf(os.Stderr, "errgroup.Go called f panic: %s\n%s", rerr, buf)
+				err = fmt.Errorf("errgroup.Go called f panic: %s", rerr)
 			}
 			if err != nil {
 				g.errOnce.Do(func() {
